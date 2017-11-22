@@ -654,13 +654,23 @@ extension TLPhotosPickerViewController: UICollectionViewDelegate,UICollectionVie
         }else {
         //select
             guard !maxCheck() else { return }
-            asset.selectedOrder = self.selectedAssets.count + 1
-            self.selectedAssets.append(asset)
-            //requestCloudDownload(asset: asset, indexPath: indexPath)
-            cell.selectedAsset = true
-            cell.orderLabel?.text = "\(asset.selectedOrder)"
-            if asset.type != .photo, self.configure.autoPlay {
-                playVideo(asset: asset, indexPath: indexPath)
+            if let max = self.configure.maxSelectedAssets, max == 1 {
+                self.selectedAssets = [asset]
+                for ccell in collectionView.visibleCells {
+                    (ccell as? TLPhotoCollectionViewCell)?.selectedAsset = false
+                }
+                cell.selectedAsset = true
+                cell.orderLabel?.isHidden = true
+                cell.orderBgView?.isHidden = true
+            } else {
+                asset.selectedOrder = self.selectedAssets.count + 1
+                self.selectedAssets.append(asset)
+                //requestCloudDownload(asset: asset, indexPath: indexPath)
+                cell.selectedAsset = true
+                cell.orderLabel?.text = "\(asset.selectedOrder)"
+                if asset.type != .photo, self.configure.autoPlay {
+                    playVideo(asset: asset, indexPath: indexPath)
+                }
             }
         }
     }
