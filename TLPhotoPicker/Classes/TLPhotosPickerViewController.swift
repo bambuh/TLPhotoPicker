@@ -396,7 +396,7 @@ extension TLPhotosPickerViewController {
         }
     }
     fileprivate func maxCheck() -> Bool {
-        if let max = self.configure.maxSelectedAssets, max <= self.selectedAssets.count {
+        if let max = self.configure.maxSelectedAssets, max <= self.selectedAssets.count && max != 1 {
             self.delegate?.didExceedMaximumNumberOfSelection(picker: self)
             self.didExceedMaximumNumberOfSelection?(self)
             return true
